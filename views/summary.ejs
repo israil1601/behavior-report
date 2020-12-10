@@ -1,0 +1,31 @@
+<%- include('./partials/header.ejs') %>
+
+<%- include(`./partials/summary-${type}.ejs`) %>
+
+<h1>Reportings for <%= type %> number <%= number %>:</h1>
+<% if (!summary.length) { %>
+<div class="alert alert-secondary">
+    No reportings found.
+  </div>
+<% } else { %>
+    <h3>
+        <b>Average sleep duration</b>: <%= summary[0]['average_sleep_duration'] %>
+    </h3>
+    <h3>
+        <b>Average time spent on sports and exercise</b>: <%= summary[0]['average_sports_duration'] %>
+    </h3>
+    <h3>
+        <b>Average time spent studying</b>: <%= summary[0]['average_study_duration'] %>
+    </h3>
+    <h3>
+        <b>Average sleep quality</b>: <%= summary[0]['average_sleep_quality'] %>
+    </h3>
+    <h3>
+        <b>Average generic mood at mornings</b>: <%= summary[0]['average_mood_morning'] %>
+    </h3>
+    <h3>
+        <b>Average generic mood at evenings</b>: <%= summary[0]['average_mood_evening'] %>
+    </h3>
+<% } %>
+
+<%- include('./partials/footer.ejs') %>
