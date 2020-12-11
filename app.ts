@@ -3,6 +3,7 @@ import { router } from "./routes/routes.ts";
 import * as middleware from "./middlewares/middlewares.ts";
 import { viewEngine, engineFactory, adapterFactory } from "./deps.ts";
 
+
 const app = new Application();
 const session = new Session({ framework: "oak" });
 await session.init();
@@ -14,7 +15,6 @@ const oakAdapter = adapterFactory.getOakAdapter();
 app.use(
   viewEngine(oakAdapter, ejsEngine)
 );
-
 
 app.use(middleware.errorMiddleware);
 app.use(middleware.limitAccessMiddleware);
