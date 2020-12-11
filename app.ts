@@ -18,7 +18,7 @@ app.use(
 
 app.use(middleware.errorMiddleware);
 app.use(middleware.limitAccessMiddleware);
-// app.use(middleware.serveStaticFilesMiddleware);
+app.use(middleware.requestLoggingMiddleware);
 
 let port = 7777;
 if (Deno.args.length > 0) {
@@ -26,8 +26,10 @@ if (Deno.args.length > 0) {
   port = Number(lastArgument);
 }
 
-console.log("runs")
 app.use(router.routes());
+
+// if page not found
+app.use(middleware.pageNotFoundMiddleware);
 
 app.listen({ port });
 

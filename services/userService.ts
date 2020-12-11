@@ -1,5 +1,5 @@
 import { executeQuery } from "../database/database.ts";
-import { hash, compare, Session } from "../deps.ts";
+import { hash, compare } from "../deps.ts";
 
 const isExistingUser = async (email: string) => {
   const existingUsers = await executeQuery(

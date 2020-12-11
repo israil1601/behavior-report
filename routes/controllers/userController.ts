@@ -1,14 +1,15 @@
-import { Context } from "https://deno.land/x/oak@v6.2.0/mod.ts";
+import { Context } from "../../deps.ts";
 import {
-  headerState,
-  isEmpty,
-  validateRegistrationForm,
-} from "../../services/helpers.ts";
+  getHeaderState,
+  isEmpty
+} from "../../helpers/helpers.ts";
+import { validateRegistrationForm } from "../../helpers/validation.ts";
 import {
   isExistingUser,
   registerUser,
   authenticateUser,
 } from "../../services/userService.ts";
+
 
 const register = async ({ request, response, session, render }: Context) => {
   const body = request.body();
@@ -28,7 +29,7 @@ const register = async ({ request, response, session, render }: Context) => {
 
   if (!isEmpty(errors)) {
     render("views/register.ejs", {
-      ...(await headerState(session)),
+      ...(await getHeaderState(session)),
       errors,
       emailInput: email,
     });
@@ -43,24 +44,26 @@ const register = async ({ request, response, session, render }: Context) => {
     email,
   });
 
-  response.redirect("/behavior/summary/weekly");
+  response.redirect("/");
 };
 
 const showLoginForm = async ({ render, session }: Context) => {
   render("views/login.ejs", {
-    ...(await headerState(session)),
+    ...(await getHeaderState(session)),
     errors: '',
     emailInput: "",
   });
 };
 
+
 const showRegistrationForm = async ({ render, session }: Context) => {
   render("views/register.ejs", {
-    ...(await headerState(session)),
+    ...(await getHeaderState(session)),
     errors: {},
     emailInput: "",
   });
 };
+
 
 const authenticate = async ({
   request,
@@ -78,7 +81,7 @@ const authenticate = async ({
   if (!id) {
     render("views/login.ejs", {
       errors: "Email and/or password are incorrect.",
-      ...(await headerState(session)),
+      ...(await getHeaderState(session)),
       emailInput: email,
     });
     return;
@@ -93,11 +96,11 @@ const authenticate = async ({
   response.redirect("/");
 };
 
-const logout = async ({ response, session }) => {
+const logOut = async ({ response, session }) => {
   await session.set("authenticated", false);
   await session.set("user", null);
 
   response.redirect("/");
 };
 
-export { register, authenticate, showLoginForm, showRegistrationForm, logout };
+export { register, authenticate, showLoginForm, showRegistrationForm, logOut };

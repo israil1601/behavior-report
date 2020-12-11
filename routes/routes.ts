@@ -1,31 +1,57 @@
 import { Router } from "../deps.ts";
-import { showLandingPage, morningReport, eveningReport, showSummaryWeek, showSummaryMonth } from "./controllers/controller.ts";
-import { setEveningReport, setMorningReport, setSummaryWeek, setSummaryMonth, getLastWeekAverage, getDayAverage } from './apis/api.ts'
-import { showLoginForm, showRegistrationForm, logout, authenticate, register } from "./controllers/userController.ts";
+import {
+  showLandingPage,
+  showMorningReport,
+  showEveningReport,
+  showSummaryWeek,
+  showSummaryMonth,
+} from "./controllers/controller.ts";
+import {
+  setSummaryWeek,
+  setSummaryMonth,
+  getLastWeekAverage,
+  getDayAverage,
+} from "./apis/api.ts";
+import {
+  showLoginForm,
+  showRegistrationForm,
+  logOut,
+  authenticate,
+  register,
+} from "./controllers/userController.ts";
+import { setEveningReport, setMorningReport } from "./apis/reportApi.ts";
 
 const router = new Router();
 
-router.get("/", showLandingPage)
-.get('/behavior/reporting/morning', morningReport)
-.get('/behavior/reporting/evening', eveningReport)
-.get('/behavior/summary/weekly', showSummaryWeek)
-.get('/behavior/summary/monthly', showSummaryMonth)
-.get('/auth/login', showLoginForm)
-.get('/auth/register', showRegistrationForm)
-.get('/auth/logout', logout)
+// Views
+router
+  .get("/", showLandingPage)
+  .get("/behavior/reporting/morning", showMorningReport)
+  .get("/behavior/reporting/evening", showEveningReport)
+  .get("/behavior/summary/weekly", showSummaryWeek)
+  .get("/behavior/summary/monthly", showSummaryMonth);
 
-router.get('/api/summary', getLastWeekAverage)
-.get('/api/summary/:year/:month/:day', getDayAverage)
+// Auth related
+router
+  .get("/auth/login", showLoginForm)
+  .get("/auth/register", showRegistrationForm)
+  .get("/auth/logout", logOut);
 
+// API
+router
+  .get("/api/summary", getLastWeekAverage)
+  .get("/api/summary/:year/:month/:day", getDayAverage);
 
-router.post('/behavior/reporting/morning', setMorningReport)
-.post("/behavior/reporting/evening", setEveningReport)
+// Post reportings
+router
+  .post("/behavior/reporting/morning", setMorningReport)
+  .post("/behavior/reporting/evening", setEveningReport);
 
-router.post('/behavior/summary/week', setSummaryWeek)
-.post('/behavior/summary/month', setSummaryMonth)
+// Weekly/Monthly summary
+router
+  .post("/behavior/summary/week", setSummaryWeek)
+  .post("/behavior/summary/month", setSummaryMonth);
 
-router.post("/auth/login", authenticate)
-.post("/auth/register", register)
-
+router.post("/auth/login", authenticate).post("/auth/register", register);
 
 export { router };

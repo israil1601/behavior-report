@@ -1,17 +1,19 @@
-import { Context, RouterContext } from "https://deno.land/x/oak@v6.2.0/mod.ts";
-import { getWeek, headerState } from "../../services/helpers.ts";
+import { Context, RouterContext } from "../../deps.ts";
+import { getWeek, getHeaderState } from "../../helpers/helpers.ts";
 import {
-  getEveningReport,
-  getMorningReport,
   getSummaryWeek,
   getSummaryMonth,
   getAverageMood,
-} from "../../services/service.ts";
+} from "../../services/summaryService.ts";
+import {
+  getEveningReport,
+  getMorningReport,
+} from "../../services/reportService.ts";
 
-const morningReport = async ({ render, session }: Context) => {
+const showMorningReport = async ({ render, session }: Context) => {
   const date = new Date().toJSON().slice(0, 10);
   const data = {
-    ...(await headerState(session)),
+    ...(await getHeaderState(session)),
     date,
     isDone: false,
     errors: {},
@@ -24,12 +26,12 @@ const morningReport = async ({ render, session }: Context) => {
   render("views/morning.ejs", data);
 };
 
-const eveningReport = async ({ render, session }: Context) => {
+const showEveningReport = async ({ render, session }: Context) => {
   const date = new Date().toJSON().slice(0, 10);
   const data = {
     date,
     isDone: false,
-    ...(await headerState(session)),
+    ...(await getHeaderState(session)),
     errors: {},
   };
   const { id } = await session.get("user");
@@ -53,7 +55,7 @@ const showSummaryWeek = async ({ render, request, session }: RouterContext) => {
     year,
     summary,
     number: week,
-    ...(await headerState(session)),
+    ...(await getHeaderState(session)),
   };
 
   render("views/summary.ejs", data);
@@ -77,7 +79,7 @@ const showSummaryMonth = async ({
     year,
     summary,
     number: month,
-    ...(await headerState(session)),
+    ...(await getHeaderState(session)),
   };
   render("views/summary.ejs", data);
 };
@@ -87,7 +89,7 @@ const showLandingPage = async ({ render, session }: RouterContext) => {
     average_mood_today: 0,
     average_mood_yesterday: 0,
     mood: "",
-    ...(await headerState(session)),
+    ...(await getHeaderState(session)),
   };
 
   const averageMood = await getAverageMood();
@@ -105,8 +107,8 @@ const showLandingPage = async ({ render, session }: RouterContext) => {
 };
 
 export {
-  morningReport,
-  eveningReport,
+  showMorningReport,
+  showEveningReport,
   showSummaryWeek,
   showSummaryMonth,
   showLandingPage,
