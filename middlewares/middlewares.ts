@@ -13,48 +13,55 @@ const limitAccessMiddleware: Middleware = async (
   next: Function
 ) => {
   const path = request.url.pathname;
+  const isAuth = await session.get("authenticated");
   const isAccessible =
+    isAuth ||
     path === "/" ||
     path.startsWith("/api") ||
-    path.startsWith("/auth") ||
-    (await session.get("authenticated"));
+    path.startsWith("/auth");
 
   if (isAccessible) await next();
   else response.redirect("/auth/login");
 };
 
-const requestLoggingMiddleware: Middleware = async ({request, session}: Context, next: Function) => {
+const requestLoggingMiddleware: Middleware = async (
+  { request, session }: Context,
+  next: Function
+) => {
   const time = new Date().toJSON();
-  const user = await session.get('user');
-  const id = user ? user.id : 'anonymous';
+  const user = await session.get("user");
+  const id = user ? user.id : "anonymous";
 
   console.log(`
   Current time: ${time}
   Request method: ${request.method}
   Requested path: ${request.url.pathname}
   User id: ${id}
-  `)
+  `);
 
   await next();
-}
+};
 
 const serveStaticFilesMiddleware: Middleware = async (context, next) => {
-  if (context.request.url.pathname.startsWith('/static')) {
+  if (context.request.url.pathname.startsWith("/static")) {
     const path = context.request.url.pathname.substring(7);
 
     await send(context, path, {
-      root: `${Deno.cwd()}/static`
+      root: `${Deno.cwd()}/static`,
     });
-
   } else {
     await next();
   }
-}
+};
 
-const pageNotFoundMiddleware: Middleware = async ({response}, next) => {
-  response.redirect('/');
-}
+const pageNotFoundMiddleware: Middleware = async ({ response }, next) => {
+  response.redirect("/");
+};
 
-
-
-export { errorMiddleware, limitAccessMiddleware, requestLoggingMiddleware, serveStaticFilesMiddleware, pageNotFoundMiddleware };
+export {
+  errorMiddleware,
+  limitAccessMiddleware,
+  requestLoggingMiddleware,
+  serveStaticFilesMiddleware,
+  pageNotFoundMiddleware,
+};

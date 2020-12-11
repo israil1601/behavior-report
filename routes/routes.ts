@@ -11,7 +11,7 @@ import {
   setSummaryMonth,
   getLastWeekAverage,
   getDayAverage,
-} from "./apis/api.ts";
+} from "./apis/summaryApi.ts";
 import {
   showLoginForm,
   showRegistrationForm,
@@ -35,8 +35,9 @@ router
 router
   .get("/auth/login", showLoginForm)
   .get("/auth/register", showRegistrationForm)
-  .get("/auth/logout", logOut);
-
+  .get("/auth/logout", logOut)
+  .post("/auth/login", authenticate)
+  .post("/auth/register", register);
 // API
 router
   .get("/api/summary", getLastWeekAverage)
@@ -51,7 +52,5 @@ router
 router
   .post("/behavior/summary/week", setSummaryWeek)
   .post("/behavior/summary/month", setSummaryMonth);
-
-router.post("/auth/login", authenticate).post("/auth/register", register);
 
 export { router };

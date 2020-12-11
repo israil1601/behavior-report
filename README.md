@@ -1,6 +1,6 @@
 # Behavior reporting application
 Keep track of your behavior throught the day to get a better glimpse of your lifestyle!
-
+Deployed version is available [here](https://behavior-report.herokuapp.com).
 ## Prerequisites
 * Deno installed
 * Set up a database

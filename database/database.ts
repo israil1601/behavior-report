@@ -4,7 +4,7 @@ import { databaseConifig } from "../config/config.ts";
 const CONCURRENT_CONNECTIONS = 3;
 const connectionPool = new Pool(databaseConifig, CONCURRENT_CONNECTIONS);
 
-const executeQuery = async (query, ...params) => {
+const executeQuery = async (query: string, ...params: any) => {
   const client = await connectionPool.connect();
   try {
     return await client.query(query, ...params);
