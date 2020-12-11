@@ -1,5 +1,6 @@
+import { RouterContext } from "https://deno.land/x/oak@v6.2.0/mod.ts";
 import { Context } from "../../deps.ts";
-import { postEveningReport, postMorningReport } from '../../services/service.ts';
+import { getLastWeekSum, getSummaryDate, postEveningReport, postMorningReport } from '../../services/service.ts';
 
 const setMorningReport = async ({request, response}: Context) => {
     const body = request.body();
@@ -45,5 +46,18 @@ const setSummaryMonth = async ({request, response}: Context) => {
     response.redirect(`/behavior/summary/monthly?m=${+month}&y=${year}`);
 }
 
+const getLastWeekAverage = async ({response}: Context) => {
+    const summary = await getLastWeekSum();
 
-export {setMorningReport, setEveningReport, setSummaryWeek, setSummaryMonth}
+    response.body = summary;
+}
+
+const getDayAverage = async ({params, response}: RouterContext) => {
+    const {year, month, day} = params;
+    const summary = await getSummaryDate(`${year}-${month}-${day}`);
+
+    response.body = summary
+}
+
+
+export {setMorningReport, setEveningReport, setSummaryWeek, setSummaryMonth, getLastWeekAverage, getDayAverage}
