@@ -43,5 +43,5 @@ deno run --allow-net --allow-read --allow-env --no-check app.ts
 ```
 ## Testing the application
 ```
-deno test --coverage --unstable tests/test.ts
+deno test --coverage --unstable tests/tests.ts
 ```
