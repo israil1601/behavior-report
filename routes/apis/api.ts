@@ -2,7 +2,7 @@ import { Context, RouterContext } from "../../deps.ts";
 
 import {
   getLastWeekSum,
-  getSummaryDate
+  getSummaryDate,
 } from "../../services/summaryService.ts";
 
 const setSummaryWeek = async ({ request, response }: Context) => {
@@ -34,9 +34,4 @@ const getDayAverage = async ({ params, response }: RouterContext) => {
   response.body = summary;
 };
 
-export {
-  setSummaryWeek,
-  setSummaryMonth,
-  getLastWeekAverage,
-  getDayAverage,
-};
+export { setSummaryWeek, setSummaryMonth, getLastWeekAverage, getDayAverage };
