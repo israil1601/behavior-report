@@ -197,6 +197,22 @@ const getSummaryDate = async(date: string) => {
   return res?.rowsOfObjects() || [];
 }
 
+const getAverageMood = async() => {
+  const res = await executeQuery(`SELECT 
+  generic_mood_morning, generic_mood_evening 
+  FROM reports WHERE reported_date > CURRENT_DATE - 1`);
+
+  const data = res?.rowsOfObjects().map(reporting => {
+    const average = Object.values(reporting).reduce((prev, curr) => +prev + +curr, 0) / 2;
+
+    return {
+      average
+    };
+  }) || [];
+
+  return data;
+}
+
 export {
   postMorningReport,
   postEveningReport,
@@ -205,5 +221,6 @@ export {
   getSummaryWeek,
   getSummaryMonth,
   getLastWeekSum,
-  getSummaryDate
+  getSummaryDate,
+  getAverageMood
 };

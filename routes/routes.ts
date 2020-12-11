@@ -1,10 +1,10 @@
 import { Router } from "../deps.ts";
-import { main, morningReport, eveningReport, showSummaryWeek, showSummaryMonth } from "./controllers/controller.ts";
+import { showLandingPage, morningReport, eveningReport, showSummaryWeek, showSummaryMonth } from "./controllers/controller.ts";
 import { setEveningReport, setMorningReport, setSummaryWeek, setSummaryMonth, getLastWeekAverage, getDayAverage } from './apis/api.ts'
 
 const router = new Router();
 
-router.get("/", main)
+router.get("/", showLandingPage)
 .get('/behavior/reporting/morning', morningReport)
 .get('/behavior/reporting/evening', eveningReport)
 .get('/behavior/summary/weekly', showSummaryWeek)
@@ -19,9 +19,5 @@ router.post('/behavior/reporting/morning', setMorningReport)
 
 router.post('/behavior/summary/week', setSummaryWeek)
 .post('/behavior/summary/month', setSummaryMonth)
-// router.get('/', hello);
-
-// router.get('/api/hello', helloApi.getHello);
-// router.post('/api/hello', helloApi.setHello);
 
 export { router };

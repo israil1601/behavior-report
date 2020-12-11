@@ -1,10 +1,6 @@
 import { Context, RouterContext } from "https://deno.land/x/oak@v6.2.0/mod.ts";
 import { getWeek } from "../../services/helpers.ts";
-import { getEveningReport, getMorningReport, getSummaryWeek, getSummaryMonth } from "../../services/service.ts";
-
-const main = async ({render}: Context) => {
-    render("views/index.ejs");
-}
+import { getEveningReport, getMorningReport, getSummaryWeek, getSummaryMonth, getAverageMood } from "../../services/service.ts";
 
 const morningReport = async ({render}: Context) => {
     const date = new Date().toJSON().slice(0, 10);
@@ -61,4 +57,25 @@ const showSummaryMonth = async ({render, request}: RouterContext) => {
     render("views/summary.ejs", data);
 }
 
-export {main, morningReport, eveningReport, showSummaryWeek, showSummaryMonth};
+const showLandingPage = async ({render}: RouterContext) => {
+    const data = {
+        average_mood_today: 0,
+        average_mood_yesterday: 0,
+        mood: ''
+    };
+    
+    const averageMood = await getAverageMood();
+    if (averageMood.length < 2) {
+        render('views/index.ejs', data);
+        return;
+    }
+    const todayAvg = averageMood[0].average;
+    const yesterdayAvg = averageMood[1].average;
+    data.average_mood_today = todayAvg;
+    data.average_mood_yesterday = yesterdayAvg;
+    data.mood = todayAvg >= yesterdayAvg ? 'bright' : 'gloomy';
+    render('views/index.ejs', data);
+}
+
+
+export {morningReport, eveningReport, showSummaryWeek, showSummaryMonth, showLandingPage};

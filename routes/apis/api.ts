@@ -54,8 +54,7 @@ const getLastWeekAverage = async ({response}: Context) => {
 
 const getDayAverage = async ({params, response}: RouterContext) => {
     const {year, month, day} = params;
-    const date = new Date(`${year}-${month}-${day}`);
-    const summary = await getSummaryDate(date.toJSON().slice(0, 10));
+    const summary = await getSummaryDate(`${year}-${month}-${day}`);
 
     response.body = summary
 }

@@ -1,4 +1,23 @@
 <%- include('./partials/header.ejs') %>
-<h1>My app</h1>
+<h1>Simple application for behavior reporting</h1>
+<p>Keep track of your behavior throught the day to get a better glimpse of your lifestyle!</p>
+
+<% if (!average_mood_today && !average_mood_yesterday) { %>
+<div class="alert alert-secondary">
+    Reportings are missing for today or yesterday.
+</div>
+<% } else { %>
+<h3>
+    <b>Average reported mood for today:</b> <%= average_mood_today %>
+</h3>
+<h3>
+    <b>Average reported mood for yesterday:</b> <%= average_mood_yesterday %>
+</h3>
+<p>
+    Things are looking <%= mood %> today.
+</p>
+<% } %>
+
+
 
 <%- include('./partials/footer.ejs') %>
