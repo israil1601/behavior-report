@@ -15,26 +15,26 @@ PGPORT=${db_port}
 ```
 * Create tables created with following commands:
 ```
-    CREATE TABLE users (
-      id SERIAL PRIMARY KEY,
-      email VARCHAR(320) NOT NULL,
-      password CHAR(60) NOT NULL
-    );
-    
-    CREATE UNIQUE INDEX ON users((lower(email)));
-    
-    CREATE TABLE reports (
-      id SERIAL PRIMARY KEY,
-      sleep_duration NUMERIC(100, 2),
-      sleep_quality INTEGER,
-      eating_quality INTEGER,
-      generic_mood_morning INTEGER,
-      generic_mood_evening INTEGER,
-      study_duration NUMERIC(100, 2),
-      sports_duration NUMERIC(100, 2),
-      reported_date date,
-      user_id INTEGER REFERENCES users(id)
-    );
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(320) NOT NULL,
+    password CHAR(60) NOT NULL
+);
+
+CREATE UNIQUE INDEX ON users((lower(email)));
+
+CREATE TABLE reports (
+    id SERIAL PRIMARY KEY,
+    sleep_duration NUMERIC(100, 2),
+    sleep_quality INTEGER,
+    eating_quality INTEGER,
+    generic_mood_morning INTEGER,
+    generic_mood_evening INTEGER,
+    study_duration NUMERIC(100, 2),
+    sports_duration NUMERIC(100, 2),
+    reported_date date,
+    user_id INTEGER REFERENCES users(id)
+);
 ```
 
 * Run the application:
