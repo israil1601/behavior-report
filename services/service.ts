@@ -94,8 +94,8 @@ const postEveningReport = async (
     "UPDATE reports SET sports_duration = $1, study_duration = $2, eating_quality = $3, generic_mood_evening = $4 WHERE reported_date = $5 AND user_id = $6",
     sportsDuration,
     studyDuration,
-    genericMood,
     eatingQuality,
+    genericMood,
     date,
     userId
   );
