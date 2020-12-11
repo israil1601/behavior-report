@@ -21,6 +21,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/">Home</a>
                 </li>
+                <% if (isAuth) { %>
                 <li class="nav-item">
                     <a class="nav-link" href="/behavior/reporting/morning">Morning Report</a>
                 </li>
@@ -34,7 +35,6 @@
                     <a class="nav-link" href="/behavior/summary/monthly">Monthly Summary</a>
                 </li>
             </ul>
-            <% if (isAuth) { %>
             <span class="navbar-text">
                 Logged in as <%= email %>
             </span>
@@ -42,11 +42,12 @@
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Log out</button>
             </form>
             <% } else { %>
+            </ul>
             <form class="form-inline my-2 my-lg-0" action="/auth/register">
-                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Register</button>
+                <input class="btn btn-secondary my-2 my-sm-0" type="submit" value="Register">
             </form>
             <form class="form-inline my-2 my-lg-0" action="/auth/login">
-                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Log in</button>
+                <input class="btn btn-secondary my-2 my-sm-0" type="submit" value="Log in">
             </form>
             <% } %>
         </div>

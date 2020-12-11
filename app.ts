@@ -17,7 +17,7 @@ app.use(
 
 
 app.use(middleware.errorMiddleware);
-// app.use(middleware.requestTimingMiddleware);
+app.use(middleware.limitAccessMiddleware);
 // app.use(middleware.serveStaticFilesMiddleware);
 
 let port = 7777;

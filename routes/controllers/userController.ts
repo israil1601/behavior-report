@@ -72,8 +72,8 @@ const authenticate = async ({ request, response, render, session }: Context) => 
     id,
     email,
   });
-
-  response.redirect("/behavior/summary/weekly");
+  
+  response.redirect("/");
 };
 
 const logout = async ({ response, session }) => {
