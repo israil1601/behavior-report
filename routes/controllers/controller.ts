@@ -10,7 +10,12 @@ import {
 
 const morningReport = async ({ render, session }: Context) => {
   const date = new Date().toJSON().slice(0, 10);
-  const data = { ...(await headerState(session)), date, isDone: false };
+  const data = {
+    ...(await headerState(session)),
+    date,
+    isDone: false,
+    errors: {},
+  };
   const { id } = await session.get("user");
   const res = await getMorningReport(+id, date);
 
@@ -21,7 +26,12 @@ const morningReport = async ({ render, session }: Context) => {
 
 const eveningReport = async ({ render, session }: Context) => {
   const date = new Date().toJSON().slice(0, 10);
-  const data = { date, isDone: false, ...(await headerState(session)) };
+  const data = {
+    date,
+    isDone: false,
+    ...(await headerState(session)),
+    errors: {},
+  };
   const { id } = await session.get("user");
 
   const res = await getEveningReport(+id, date);

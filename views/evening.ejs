@@ -1,25 +1,28 @@
 <%- include('./partials/header.ejs',{isAuth,email}) %>
 <h1>Evening report</h1>
 <% if (isDone) { %>
-  <div class="alert alert-dismissible alert-primary">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <div class="alert alert-primary">
     Reporting for this evening has already been done.
     You may update your report.
   </div>
 <% } %>
 <form action="/behavior/reporting/evening" method="POST">
+  <%- include('./partials/error.ejs', { errors, attribute: 'date'}) %>
     <div class="form-group">
         <label for="date">Date</label>
         <input type="date" class="form-control" id="date" value="<%= date %>" name="date">
       </div>
+    <%- include('./partials/error.ejs', { errors, attribute: 'sports_duration'}) %>
     <div class="form-group">
         <label for="sports_duration">Time spent on sports and exercise</label>
         <input type="number" class="form-control" id="sports_duration" name="sports_duration">
       </div>
+    <%- include('./partials/error.ejs', { errors, attribute: 'study_duration'}) %>
       <div class="form-group">
         <label for="study_duration">Time spent studying</label>
         <input type="number" class="form-control" id="study_duration" name="study_duration">
       </div>
+    <%- include('./partials/error.ejs', { errors, attribute: 'eating_quality'}) %>
       <div class="form-group">
         <label for="eating_quality">Regularity and quality of eating</label>
         <select class="form-control" id="eating_quality" name="eating_quality">
@@ -30,6 +33,7 @@
           <option>5</option>
         </select>
       </div>
+    <%- include('./partials/error.ejs', { errors, attribute: 'generic_mood'}) %>
       <div class="form-group">
         <label for="generic_mood">Generic mood</label>
         <select class="form-control" id="generic_mood" name="generic_mood">

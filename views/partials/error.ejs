@@ -1,0 +1,7 @@
+<% if (errors && errors[attribute]) { %>
+<ul class="list-group">
+    <% Object.values(errors[attribute]).forEach((err) => { %>
+    <li class="list-group-item list-group-item-danger"><%= err %></li>
+    <% }); %>
+</ul>
+<% } %>

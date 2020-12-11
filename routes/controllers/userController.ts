@@ -1,5 +1,9 @@
 import { Context } from "https://deno.land/x/oak@v6.2.0/mod.ts";
-import { headerState } from "../../services/helpers.ts";
+import {
+  headerState,
+  isEmpty,
+  validateRegistrationForm,
+} from "../../services/helpers.ts";
 import {
   isExistingUser,
   registerUser,
@@ -14,23 +18,23 @@ const register = async ({ request, response, session, render }: Context) => {
   const password = params.get("password");
   const verification = params.get("verification");
 
-  if (password !== verification) {
+  const errors = await validateRegistrationForm({ email, password });
+
+  if (password !== verification)
+    errors.verification = { passwordMatch: "passwords do not match." };
+
+  if (!errors.email && (await isExistingUser(email)))
+    errors.email = { isUnique: "user with this email already exists." };
+
+  if (!isEmpty(errors)) {
     render("views/register.ejs", {
-      error: "Passwords do not match.",
       ...(await headerState(session)),
-      emailInput: email
+      errors,
+      emailInput: email,
     });
     return;
   }
 
-  if (await isExistingUser(email)) {
-    render("views/register.ejs", {
-      error: "User with this email already exists.",
-      ...(await headerState(session)),
-      emailInput: email
-    });
-    return;
-  }
   const { id } = (await registerUser(email, password))[0];
 
   await session.set("authenticated", true);
@@ -43,14 +47,27 @@ const register = async ({ request, response, session, render }: Context) => {
 };
 
 const showLoginForm = async ({ render, session }: Context) => {
-  render("views/login.ejs", { ...(await headerState(session)), error: "", emailInput: '' });
+  render("views/login.ejs", {
+    ...(await headerState(session)),
+    errors: '',
+    emailInput: "",
+  });
 };
 
 const showRegistrationForm = async ({ render, session }: Context) => {
-  render("views/register.ejs", { ...(await headerState(session)), error: "", emailInput: '' });
+  render("views/register.ejs", {
+    ...(await headerState(session)),
+    errors: {},
+    emailInput: "",
+  });
 };
 
-const authenticate = async ({ request, response, render, session }: Context) => {
+const authenticate = async ({
+  request,
+  response,
+  render,
+  session,
+}: Context) => {
   const body = request.body();
   const params = await body.value;
   const email = params.get("email");
@@ -60,9 +77,9 @@ const authenticate = async ({ request, response, render, session }: Context) => 
 
   if (!id) {
     render("views/login.ejs", {
-      error: "Email and/or password are incorrect.",
+      errors: "Email and/or password are incorrect.",
       ...(await headerState(session)),
-      emailInput: email
+      emailInput: email,
     });
     return;
   }
@@ -72,7 +89,7 @@ const authenticate = async ({ request, response, render, session }: Context) => 
     id,
     email,
   });
-  
+
   response.redirect("/");
 };
 

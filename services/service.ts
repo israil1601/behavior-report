@@ -166,7 +166,7 @@ const getSummaryMonth = async (
     for (let [key, value] of Object.entries(data)) {
       obj[key] = +value;
     }
-    
+
     return obj;
   });
 };
@@ -182,36 +182,45 @@ const getLastWeekSum = async () => {
   FROM reports WHERE reported_date > CURRENT_DATE - interval '7 days'`);
 
   return res?.rowsOfObjects() || [];
-}
+};
 
-const getSummaryDate = async(date: string) => {
-  const res = await executeQuery(`SELECT 
+const getSummaryDate = async (date: string) => {
+  const res = await executeQuery(
+    `SELECT 
   avg(sleep_duration) as average_sleep_duration,
   avg(sports_duration) as average_sports_duration,
   avg(study_duration) as average_study_duration,
   avg(eating_quality) as average_eating_quality,
   avg(generic_mood_morning) as average_mood_morning,
   avg(generic_mood_evening) as average_mood_evening
-  FROM reports WHERE reported_date = $1`, date);
+  FROM reports WHERE reported_date = $1`,
+    date
+  );
 
   return res?.rowsOfObjects() || [];
-}
+};
 
-const getAverageMood = async() => {
+const getAverageMood = async () => {
   const res = await executeQuery(`SELECT 
-  generic_mood_morning, generic_mood_evening 
-  FROM reports WHERE reported_date > CURRENT_DATE - 1`);
+  avg(generic_mood_morning) as average_mood_morning,
+  avg(generic_mood_evening) as average_mood_evening, reported_date
+  FROM reports WHERE reported_date > CURRENT_DATE - 2 group by reported_date`);
 
-  const data = res?.rowsOfObjects().map(reporting => {
-    const average = Object.values(reporting).reduce((prev, curr) => +prev + +curr, 0) / 2;
-
-    return {
-      average
-    };
-  }) || [];
+  const data =
+    res?.rowsOfObjects().map((reporting) => {
+      const {
+        average_mood_morning,
+        average_mood_evening,
+        reported_date,
+      } = reporting;
+      return {
+        average: (+average_mood_morning + +average_mood_evening) / 2,
+        date: reported_date,
+      };
+    }) || [];
 
   return data;
-}
+};
 
 export {
   postMorningReport,
@@ -222,5 +231,5 @@ export {
   getSummaryMonth,
   getLastWeekSum,
   getSummaryDate,
-  getAverageMood
+  getAverageMood,
 };

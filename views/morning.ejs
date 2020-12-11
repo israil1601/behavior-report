@@ -8,14 +8,17 @@
   </div>
 <% } %>
 <form action="/behavior/reporting/morning" method="POST">
+  <%- include('./partials/error.ejs', { errors, attribute: 'date'}) %>
     <div class="form-group">
         <label for="date">Date</label>
         <input type="date" class="form-control" id="date" value="<%= date %>" name="date">
       </div>
+    <%- include('./partials/error.ejs', { errors, attribute: 'sleep_duration'}) %>
     <div class="form-group">
         <label for="sleep_duration">Sleep duration</label>
-        <input type="number" class="form-control" id="sleep_duration" name="sleep_duration" required>
+        <input type="number" class="form-control" id="sleep_duration" name="sleep_duration">
       </div>
+    <%- include('./partials/error.ejs', { errors, attribute: 'sleep_quality'}) %>
       <div class="form-group">
         <label for="sleep_quality">Sleep quality</label>
         <select class="form-control" id="sleep_quality" name="sleep_quality">
@@ -26,7 +29,8 @@
           <option>5</option>
         </select>
       </div>
-      <div class="form-group">
+    <%- include('./partials/error.ejs', { errors, attribute: 'generic_mood'}) %>
+    <div class="form-group">
         <label for="generic_mood">Generic mood</label>
         <select class="form-control" id="generic_mood" name="generic_mood">
           <option>1</option>
