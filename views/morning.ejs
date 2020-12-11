@@ -1,8 +1,7 @@
 <%- include('./partials/header.ejs',{isAuth,email}) %>
 <h1>Morning Report</h1>
 <% if (isDone) { %>
-  <div class="alert alert-dismissible alert-primary">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <div class="alert alert-primary">
     Reporting for this morning has already been done.
     You may update your report.
   </div>
