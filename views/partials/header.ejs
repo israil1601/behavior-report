@@ -34,8 +34,21 @@
                     <a class="nav-link" href="/behavior/summary/monthly">Monthly Summary</a>
                 </li>
             </ul>
-
+            <% if (isAuth) { %>
+            <span class="navbar-text">
+                Logged in as <%= email %>
+            </span>
+            <form class="form-inline my-2 my-lg-0" action="/auth/logout">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Log out</button>
+            </form>
+            <% } else { %>
+            <form class="form-inline my-2 my-lg-0" action="/auth/register">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Register</button>
+            </form>
+            <form class="form-inline my-2 my-lg-0" action="/auth/login">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Log in</button>
+            </form>
+            <% } %>
         </div>
     </nav>
     <div class="container">
-

@@ -1,9 +1,13 @@
-import { Application } from "./deps.ts";
+import { Application, Session } from "./deps.ts";
 import { router } from "./routes/routes.ts";
 import * as middleware from "./middlewares/middlewares.ts";
 import { viewEngine, engineFactory, adapterFactory } from "./deps.ts";
 
 const app = new Application();
+const session = new Session({ framework: "oak" });
+await session.init();
+app.use(session.use()(session));
+
 
 const ejsEngine = engineFactory.getEjsEngine();
 const oakAdapter = adapterFactory.getOakAdapter();

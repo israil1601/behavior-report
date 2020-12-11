@@ -1,0 +1,18 @@
+<%- include('./partials/header.ejs',{isAuth,email}) %>
+<form action="/auth/login" method="POST">
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" placeholder="Enter email" value="<%= emailInput %>" name="email">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+    </div>
+    <input type="submit" value="Submit" class="btn btn-primary">
+</form>
+<% if (error) { %>
+    <div class="alert alert-danger">
+        <%= error %>
+    </div>
+<% } %>
+<%- include('./partials/footer.ejs') %>

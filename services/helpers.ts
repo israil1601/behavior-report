@@ -5,4 +5,14 @@ const getWeek = (date: Date) => {
   );
 };
 
-export { getWeek };
+const headerState = async (session) => {
+  const isAuth = await session.get('authenticated');
+  const userObj = await session.get('user');
+  const email = userObj?.email || '';
+  return {
+      isAuth,
+      email
+  };
+}
+
+export { getWeek, headerState};

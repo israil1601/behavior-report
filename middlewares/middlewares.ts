@@ -1,5 +1,6 @@
+import { Middleware, RouterMiddleware } from "https://deno.land/x/oak@v6.2.0/mod.ts";
 
-const errorMiddleware = async(context, next) => {
+const errorMiddleware: Middleware = async(context, next) => {
   try {
     await next();
   } catch (e) {
@@ -7,12 +8,6 @@ const errorMiddleware = async(context, next) => {
   }
 }
 
-const requestTimingMiddleware = async({ request }, next) => {
-  const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  console.log(`${request.method} ${request.url.pathname} - ${ms} ms`);
-}
 
 
-export { errorMiddleware, requestTimingMiddleware };
+export { errorMiddleware };

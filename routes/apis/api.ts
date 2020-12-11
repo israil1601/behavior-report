@@ -2,7 +2,7 @@ import { RouterContext } from "https://deno.land/x/oak@v6.2.0/mod.ts";
 import { Context } from "../../deps.ts";
 import { getLastWeekSum, getSummaryDate, postEveningReport, postMorningReport } from '../../services/service.ts';
 
-const setMorningReport = async ({request, response}: Context) => {
+const setMorningReport = async ({request, response, session}: Context) => {
     const body = request.body();
     const content = await body.value;
     
@@ -10,13 +10,14 @@ const setMorningReport = async ({request, response}: Context) => {
     const sleepDuration = +content.get("sleep_duration");
     const sleepQuality = +content.get("sleep_quality");
     const genericMood = +content.get("generic_mood");
-    
-    await postMorningReport(sleepDuration, sleepQuality, genericMood, date, 1);
+    const { id } = await session.get("user");
+
+    await postMorningReport(sleepDuration, sleepQuality, genericMood, date, id);
     
     response.redirect("/");
 }
 
-const setEveningReport = async({ request, response }: Context) => {
+const setEveningReport = async({ request, response, session }: Context) => {
     const body = request.body();
     const content = await body.value;
     
@@ -26,7 +27,9 @@ const setEveningReport = async({ request, response }: Context) => {
     const eatingQuality = +content.get("eating_quality");
     const genericMood = +content.get("generic_mood");
     
-    await postEveningReport(sportsDuration, studyDuration, eatingQuality, genericMood, date, 1);
+    const { id } = await session.get("user");
+
+    await postEveningReport(sportsDuration, studyDuration, eatingQuality, genericMood, date, id);
     response.redirect("/");
 }
 
